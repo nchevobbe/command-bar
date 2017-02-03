@@ -1,0 +1,36 @@
+== API OAuth ==
+
+Une appli qui récupère un jeton depuis le CAS
+client_id et client_secret
+service_id ?
+
+côté client 
+----------------
+On appelle le CAS pour obtenir un jeton (url serveur CAS + endpoint), possiblement avec login/mdp
+On appelle l'API avec dans un header ce jeton
+
+
+After enabling OAuth support, three new urls will be available:
+
+    /oauth2.0/authorize
+    It’s the url to call to authorize the user: the CAS login page will be displayed and the user will authenticate. 
+    After successful authentication, the user will be redirected to the OAuth callback url with a code.
+    Input GET parameters required: client_id and redirect_uri.
+
+    /oauth2.0/accessToken
+    It’s the url to call to exchange the code for an access token. 
+    Input GET parameters required: client_id, redirect_uri, client_secret and code.
+
+
+coté API
+----------------
+On récupère le jeton dans le header de l'appel
+On appel CAS avec
+CAS nous indique que c'est ok ainsi que les infos utilisateurs
+On met en cache pour un certain temps pour ne pas trop flooder le serveur CAS
+Dans la dernière minute de validité, si l'API reçoit une requête
+
+    /oauth2.0/profile
+    It’s the url to call to get the profile of the authorized user. 
+    Input GET parameter required: access_token. 
+    The response is in JSON format with all attributes of the user.
