@@ -1,0 +1,20 @@
+{
+  "name": "command-bar",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "inferno-scripts": "0.13.2"
+  },
+  "dependencies": {
+    "babel-plugin-inferno": "^1.7.0",
+    "inferno": "^1.2.2",
+    "inferno-component": "^1.2.2",
+    "inferno-create-element": "^1.2.2"
+  },
+  "scripts": {
+    "start": "inferno-scripts start",
+    "build": "inferno-scripts build",
+    "test": "inferno-scripts test --env=jsdom",
+    "eject": "inferno-scripts eject"
+  }
+}
