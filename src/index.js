@@ -1,9 +1,19 @@
 import Inferno from 'inferno';
-import CommandBar from './CommandBar';
+import CommandBar from './components/CommandBar';
 import createElement from 'inferno-create-element';
+
+import { Provider } from 'inferno-redux';
+import configureStore from './store';
+
 import './index.css';
 
+const store = configureStore();
+
 Inferno.render(
-  createElement(CommandBar, {}),
+  createElement(
+    Provider,
+    {store},
+    createElement(CommandBar, {})
+  ),
   document.getElementById('app')
 );

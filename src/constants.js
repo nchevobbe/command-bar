@@ -1,0 +1,5 @@
+export default {
+  CHANGE_CURRENT_INPUT: Symbol("CHANGE_CURRENT_INPUT"),
+  FOCUS_INPUT: Symbol("FOCUS_INPUT"),
+  BLUR_INPUT: Symbol("BLUR_INPUT"),
+};
