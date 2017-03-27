@@ -1,0 +1,126 @@
+/*****************************/
+/** Containeur du composant **/
+/*****************************/
+.command-bar {
+  --active-color: #EE3E40;
+  background-color: white;
+  border: 2px solid rgba(120,100,100,0.3);
+  background-image: none;
+  font-size: 16px;
+  z-index: 999;
+  width: 100%;
+  max-width: 400px;
+}
+
+/***********************************/
+/* Champ de recherche + breadcrumb */
+/***********************************/
+.command-bar input[type="search"]{
+  display: block;
+  width: 100%;
+  padding: 0.5em;
+  font-size: 1.1em;
+  border: none;
+  background: none;
+  font-style: initial;
+}
+
+.command-bar .breadcrumb {
+  margin: 0;
+  padding: 0 0.5em 0.5em;
+  list-style: none;
+  flex: 1;
+}
+
+.command-bar .breadcrumb li {
+  font-size: 0.8em;
+  display: inline-block;
+  padding: 0.1em 0.25em;
+  background-color: #888;
+  color: white;
+}
+
+.command-bar .breadcrumb li.active-selection {
+  background-color: var(--active-color);
+}
+
+.command-bar .breadcrumb li + li::before {
+  content: ">";
+  margin-right: 0.25em;
+}
+
+/*****************************/
+/* Résultats de la recherche */
+/*****************************/
+.command-bar .command-bar-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  background-color: white;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.command-bar .command-bar-list li {
+  padding: 0.5em;
+}
+
+.command-bar .command-bar-list .description {
+  color: #888;
+  font-style: italic;
+  font-size: 0.8em;
+  padding: 0;
+  margin: 0;
+  display: block;
+}
+
+.command-bar .command-bar-list .active {
+  background-color: var(--active-color);
+  color: white;
+}
+
+.command-bar .command-bar-list .active .description {
+  color: #ddd;
+}
+
+.command-bar .command-bar-list li.error {
+  background-color: #eeca51;
+  color: #222222;
+}
+
+.command-bar .command-bar-list li.active .summary {
+  color: white;
+}
+
+.command-bar .command-bar-list li.error .summary {
+  color: #222222;
+}
+
+.command-bar .command-bar-list li + li {
+  border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+/*****************************/
+/******** Animations *********/
+/*****************************/
+
+.command-bar.loading::after {
+  content: "";
+  width: 3em;
+  height: 3em;
+  background-color: #888;
+  display: block;
+  margin: 1em auto;
+  border-radius: 50%;
+  animation: 0.4s ease infinite alternate breath;
+}
+
+@keyframes breath {
+  from  {
+    transform: scale(0.5);
+  }
+  to  {
+    transform: scale(1);
+    background-color: var(--active-color);
+  }
+}

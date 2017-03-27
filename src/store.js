@@ -1,11 +1,16 @@
 const {
-    createStore
+  applyMiddleware,
+  createStore
 } = require("redux");
 
-import reducers from "./reducers/index";
+import thunk from 'redux-thunk';
+import getReducer from "./reducers.js";
 
 const configureStore = function(options) {
-  return createStore(reducers);
+  return createStore(
+    getReducer(options),
+    applyMiddleware(thunk)
+  );
 }
 
 export default configureStore;

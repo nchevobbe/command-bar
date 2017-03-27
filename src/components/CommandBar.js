@@ -4,47 +4,82 @@ import createElement from 'inferno-create-element';
 import { connect } from 'inferno-redux';
 import { bindActionCreators } from 'redux';
 
-import './CommandBar.css';
+import Input from './Input';
+import List from './List';
+import Breadcrumb from './Breadcrumb';
 
-import Hud from './Hud';
-import Results from './Results';
-import actions from '../actions';
-import selectors from '../selectors';
+import actions from '../actions.js';
+import selectors from '../selectors.js';
 
 class CommandBar extends Component {
   render() {
     let {
+      activeCommandIndex,
+      focused,
+      displayedCommands,
+      loading,
+      history,
+      selection,
+      // Actions
+      addActiveCommandToSelection,
+      blurInput,
       currentInputValue,
       changeCurrentInput,
-      focused,
-      focusInput,
-      blurInput,
-      results,
+      executeActiveCommand,
+      executeCommandAt,
+      expand,
+      navigateList,
+      navigateBackward,
+      setActiveItemIndex,
     } = this.props;
-console.log(this.props);
-    let resultsList = focused && createElement(Results, {results});
 
-    return createElement(
-      "main", {
-        className: "command-bar"
+    let resultsList = !loading
+      && createElement(List, {
+        activeCommandIndex,
+        displayedCommands,
+        executeCommandAt,
+        setActiveItemIndex,
+      });
+
+    let breadcrumb;
+    if (selection.length || history.length > 0) {
+      breadcrumb = createElement(Breadcrumb, {
+        history,
+        selection
+      });
+    }
+
+    return createElement("main", {
+        className: "command-bar" + (loading ? " loading" : "")
       },
-      createElement(Hud, {
+      createElement(Input, {
+        addActiveCommandToSelection,
         currentInputValue,
         changeCurrentInput,
         focused,
-        focusInput,
+        expand,
         blurInput,
+        loading,
+        executeActiveCommand,
+        navigateList,
+        navigateBackward,
       }),
+      breadcrumb,
       resultsList
     );
   }
 }
 
 function mapStateToProps(state) {
+  console.log("state", state);
   return {
+    activeCommandIndex: state.activeCommandIndex,
     currentInputValue: selectors.getCurrentInputValue(state),
-    results: selectors.getResults(state),
+    displayedCommands: selectors.getDisplayedCommands(state),
+    history: selectors.getHistory(state),
     focused: selectors.getFocused(state),
+    loading: state.loading,
+    selection: state.selection
   };
 }
 
@@ -53,6 +88,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(CommandBar);
