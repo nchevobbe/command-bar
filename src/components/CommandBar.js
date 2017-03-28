@@ -1,6 +1,4 @@
-import Component from 'inferno-component';
 import createElement from 'inferno-create-element';
-
 import { connect } from 'inferno-redux';
 import { bindActionCreators } from 'redux';
 
@@ -11,63 +9,61 @@ import Breadcrumb from './Breadcrumb';
 import actions from '../actions.js';
 import selectors from '../selectors.js';
 
-class CommandBar extends Component {
-  render() {
-    let {
+function CommandBar (props) {
+  let {
+    activeCommandIndex,
+    focused,
+    displayedCommands,
+    loading,
+    history = [],
+    selection = [],
+    // Actions
+    addActiveCommandToSelection,
+    blurInput,
+    currentInputValue,
+    changeCurrentInput,
+    executeActiveCommand,
+    executeCommandAt,
+    expand,
+    navigateList,
+    navigateBackward,
+    setActiveItemIndex,
+  } = props;
+
+  let resultsList = !loading
+    && createElement(List, {
       activeCommandIndex,
-      focused,
       displayedCommands,
-      loading,
+      executeCommandAt,
+      setActiveItemIndex,
+    });
+
+  let breadcrumb;
+  if (selection.length || history.length > 0) {
+    breadcrumb = createElement(Breadcrumb, {
       history,
-      selection,
-      // Actions
+      selection
+    });
+  }
+
+  return createElement("main", {
+      className: "command-bar" + (loading ? " loading" : "")
+    },
+    createElement(Input, {
       addActiveCommandToSelection,
-      blurInput,
       currentInputValue,
       changeCurrentInput,
-      executeActiveCommand,
-      executeCommandAt,
+      focused,
       expand,
+      blurInput,
+      loading,
+      executeActiveCommand,
       navigateList,
       navigateBackward,
-      setActiveItemIndex,
-    } = this.props;
-
-    let resultsList = !loading
-      && createElement(List, {
-        activeCommandIndex,
-        displayedCommands,
-        executeCommandAt,
-        setActiveItemIndex,
-      });
-
-    let breadcrumb;
-    if (selection.length || history.length > 0) {
-      breadcrumb = createElement(Breadcrumb, {
-        history,
-        selection
-      });
-    }
-
-    return createElement("main", {
-        className: "command-bar" + (loading ? " loading" : "")
-      },
-      createElement(Input, {
-        addActiveCommandToSelection,
-        currentInputValue,
-        changeCurrentInput,
-        focused,
-        expand,
-        blurInput,
-        loading,
-        executeActiveCommand,
-        navigateList,
-        navigateBackward,
-      }),
-      breadcrumb,
-      resultsList
-    );
-  }
+    }),
+    breadcrumb,
+    resultsList
+  );
 }
 
 function mapStateToProps(state) {
